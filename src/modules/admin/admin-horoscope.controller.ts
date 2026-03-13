@@ -209,10 +209,11 @@ export const generateHoroscopeHandler = async (
 
   // Generate one sign at a time so each request is distinct and content varies per sign
   const generated: Array<{ zodiacSign: typeof targetZodiacs[number]; [key: string]: any }> = [];
+  const dateToUse = date ? new Date(date) : new Date();
   for (const z of targetZodiacs) {
     const content = await generateHoroscope({
       zodiacSign: z as any,
-      date: new Date(date),
+      date: dateToUse,
       tone,
       notes,
     });
