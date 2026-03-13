@@ -26,10 +26,12 @@ In the service **Settings**:
 - **Root Directory:** leave empty (repo root is the backend).
 
 - **Build Command:**  
-  `npm install && npm run build`
+  `npm install && npm run build`  
+  (postinstall runs `prisma generate`; build runs `tsc`)
 
 - **Start Command:**  
-  `npx prisma migrate deploy && node dist/server.js`
+  `npx prisma migrate deploy && node dist/server.js`  
+  (runs migrations then starts the server; do not use `prisma migrate dev` in production)
 
 ## 4. Add PostgreSQL
 

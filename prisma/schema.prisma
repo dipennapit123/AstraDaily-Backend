@@ -1,8 +1,8 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+//
+// DATABASE_URL: Set in Railway Variables (or .env locally). Used by prisma.config.ts
+// for migrations and by the app at runtime. Do not use localhost in production.
 
 generator client {
   provider = "prisma-client"

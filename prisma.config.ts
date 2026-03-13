@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
 
-// Use placeholder during build when no URL is set. Runtime/migrations use env.
+// DATABASE_URL from env (Railway sets it). Placeholder only for prisma generate when no DB (e.g. CI build).
 const databaseUrl =
   process.env.DATABASE_URL ||
   process.env.DATABASE_PRIVATE_URL ||

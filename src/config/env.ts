@@ -10,7 +10,7 @@ const databaseUrl =
   "";
 
 export const env = {
-  port: process.env.PORT ? Number(process.env.PORT) : 4000,
+  port: process.env.PORT ? Number(process.env.PORT) : 8080,
   nodeEnv: process.env.NODE_ENV ?? "development",
   databaseUrl,
   clerkJwtAudience: process.env.CLERK_JWT_AUDIENCE ?? "",
@@ -20,11 +20,9 @@ export const env = {
   geminiApiKey: process.env.GEMINI_API_KEY ?? "",
 };
 
-if (!env.databaseUrl) {
+if (!process.env.DATABASE_URL && !process.env.DATABASE_PRIVATE_URL && !process.env.DATABASE_PUBLIC_URL) {
   // eslint-disable-next-line no-console
-  console.warn(
-    "[env] DATABASE_URL is not set. Set it in Railway Variables (or use reference: ${{Postgres.DATABASE_URL}}). Prisma will fail to connect."
-  );
+  console.warn("DATABASE_URL is not set. Set it in Railway Variables. Prisma will fail to connect.");
 } else {
   // eslint-disable-next-line no-console
   console.log("[env] DATABASE_URL is set.");

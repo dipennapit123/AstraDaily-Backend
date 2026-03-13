@@ -1,10 +1,11 @@
 import { createApp } from "./app";
-import { env } from "./config/env";
 
 const app = createApp();
 
-app.listen(env.port, () => {
+const PORT = process.env.PORT ? Number(process.env.PORT) : 8080;
+
+app.listen(PORT, () => {
   // eslint-disable-next-line no-console
-  console.log(`API server listening on port ${env.port}`);
+  console.log(`API running on ${PORT}`);
 });
 
