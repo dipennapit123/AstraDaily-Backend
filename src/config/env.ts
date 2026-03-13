@@ -15,7 +15,7 @@ export const env = {
   databaseUrl,
   clerkJwtAudience: process.env.CLERK_JWT_AUDIENCE ?? "",
   clerkJwtIssuer: process.env.CLERK_JWT_ISSUER ?? "",
-  adminJwtSecret: process.env.ADMIN_JWT_SECRET ?? "changeme",
+  adminJwtSecret: (process.env.ADMIN_JWT_SECRET ?? "changeme").trim(),
   groqApiKey: process.env.GROQ_API_KEY ?? "",
   geminiApiKey: process.env.GEMINI_API_KEY ?? "",
 };
@@ -26,5 +26,14 @@ if (!process.env.DATABASE_URL && !process.env.DATABASE_PRIVATE_URL && !process.e
 } else {
   // eslint-disable-next-line no-console
   console.log("[env] DATABASE_URL is set.");
+}
+
+const adminSecret = (process.env.ADMIN_JWT_SECRET ?? "").trim();
+if (!adminSecret || adminSecret === "changeme") {
+  // eslint-disable-next-line no-console
+  console.warn("[env] ADMIN_JWT_SECRET is not set or is 'changeme'. Add ADMIN_JWT_SECRET in Railway → Backend service → Variables.");
+} else {
+  // eslint-disable-next-line no-console
+  console.log("[env] ADMIN_JWT_SECRET is set.");
 }
 
