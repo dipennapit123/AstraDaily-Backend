@@ -17,8 +17,15 @@ export const errorHandler = (
 ) => {
   const status =
     err instanceof ApiError ? err.statusCode : (err as any)?.statusCode ?? 500;
-  const message =
+  let message =
     err instanceof Error ? err.message : "Unexpected server error.";
+  // Surface Prisma validation errors so frontend can show them
+  if ((err as any)?.meta?.target || (err as any)?.code) {
+    const prismaMsg = (err as any).message;
+    if (typeof prismaMsg === "string" && prismaMsg.length < 300) {
+      message = prismaMsg;
+    }
+  }
 
   if (process.env.NODE_ENV !== "test") {
     // eslint-disable-next-line no-console

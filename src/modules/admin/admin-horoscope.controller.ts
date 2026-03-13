@@ -111,8 +111,8 @@ export const createHoroscopeHandler = async (
 
     const data = parsed.data;
 
-    const created = await createHoroscope({
-      zodiacSign: data.zodiacSign as any,
+    const payload: Record<string, unknown> = {
+      zodiacSign: data.zodiacSign,
       date: new Date(data.date),
       title: data.title,
       summary: data.summary,
@@ -122,14 +122,14 @@ export const createHoroscopeHandler = async (
       wealthConfidence: data.wealthConfidence,
       loveConfidence: data.loveConfidence,
       healthConfidence: data.healthConfidence,
-      wealthActionLabel: data.wealthActionLabel,
-      loveActionLabel: data.loveActionLabel,
-      healthActionLabel: data.healthActionLabel,
-      weeklyOutlook: data.weeklyOutlook,
+      wealthActionLabel: data.wealthActionLabel ?? null,
+      loveActionLabel: data.loveActionLabel ?? null,
+      healthActionLabel: data.healthActionLabel ?? null,
+      weeklyOutlook: data.weeklyOutlook ?? null,
       isPublished: data.isPublished ?? false,
-      createdBy: undefined,
-      updatedBy: undefined,
-    });
+    };
+
+    const created = await createHoroscope(payload as any);
 
     res.status(201).json({ success: true, data: created });
   } catch (err) {
