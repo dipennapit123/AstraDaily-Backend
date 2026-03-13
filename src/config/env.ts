@@ -2,11 +2,12 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-// Railway and some hosts use DATABASE_URL; Railway also exposes DATABASE_PUBLIC_URL / DATABASE_PRIVATE_URL
+// Railway and some hosts use DATABASE_URL; Railway also exposes DATABASE_PUBLIC_URL / DATABASE_PRIVATE_URL / POSTGRES_URL
 const databaseUrl =
   process.env.DATABASE_URL ||
   process.env.DATABASE_PRIVATE_URL ||
   process.env.DATABASE_PUBLIC_URL ||
+  process.env.POSTGRES_URL ||
   "";
 
 export const env = {
@@ -20,12 +21,17 @@ export const env = {
   geminiApiKey: process.env.GEMINI_API_KEY ?? "",
 };
 
-if (!process.env.DATABASE_URL && !process.env.DATABASE_PRIVATE_URL && !process.env.DATABASE_PUBLIC_URL) {
+const hasDbUrl =
+  process.env.DATABASE_URL ||
+  process.env.DATABASE_PRIVATE_URL ||
+  process.env.DATABASE_PUBLIC_URL ||
+  process.env.POSTGRES_URL;
+if (!hasDbUrl) {
   // eslint-disable-next-line no-console
-  console.warn("DATABASE_URL is not set. Set it in Railway Variables. Prisma will fail to connect.");
+  console.warn("DATABASE_URL (or POSTGRES_URL) is not set. Set it in Railway → Backend → Variables. Prisma will fail to connect.");
 } else {
   // eslint-disable-next-line no-console
-  console.log("[env] DATABASE_URL is set.");
+  console.log("[env] Database URL is set.");
 }
 
 const adminSecret = (process.env.ADMIN_JWT_SECRET ?? "").trim();

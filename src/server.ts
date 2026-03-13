@@ -9,6 +9,7 @@ const dbUrl =
   process.env.DATABASE_URL ||
   process.env.DATABASE_PRIVATE_URL ||
   process.env.DATABASE_PUBLIC_URL ||
+  process.env.POSTGRES_URL ||
   "";
 
 app.listen(PORT, () => {
