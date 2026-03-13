@@ -85,6 +85,14 @@ GEMINI_API_KEY=
 - If migrations fail, ensure `DATABASE_URL` is set and that the Postgres service is running.
 - In **Clerk**, add your Railway backend URL to allowed origins/redirect URLs if required for production.
 
+## 8. DATABASE_URL not working (ECONNREFUSED / connection refused)
+
+- **Variable must be on the backend service:** In Railway, click the **backend** service (the one that runs Node), then **Variables**. `DATABASE_URL` must appear in **this** service’s list. If it’s only on the Postgres service, the backend won’t see it.
+- **Add by reference:** In the **backend** service → Variables → **New variable** → **Add a reference** (or “Link from another service”) → choose the **Postgres** service → select **DATABASE_URL**. Save and redeploy.
+- **Or paste the URL:** From Postgres → Variables/Connect, copy the connection string. In the **backend** service → Variables, add a variable named exactly `DATABASE_URL` (no space) and paste the value. Use the **public** URL if the backend is in a different Railway project.
+- **Redeploy:** After changing variables, use **Deployments** → **Redeploy** so the new value is loaded.
+- **Check logs:** After deploy, open the backend **Logs**. You should see either `[db] Using host: ...` and `[db] Connection OK`, or `[db] DATABASE_URL is empty` / `[db] Connection failed: ...`. Use that to confirm the URL is set and the connection works.
+
 ## Optional: run migrations manually
 
 From your machine (with `DATABASE_URL` pointing at Railway Postgres), in the backend repo root:
