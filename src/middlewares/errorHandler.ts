@@ -11,7 +11,7 @@ export class ApiError extends Error {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const errorHandler = (
   err: unknown,
-  _req: Request,
+  req: Request,
   res: Response,
   _next: NextFunction,
 ) => {
@@ -23,6 +23,12 @@ export const errorHandler = (
   if (process.env.NODE_ENV !== "test") {
     // eslint-disable-next-line no-console
     console.error(err);
+  }
+
+  const origin = req.header("Origin");
+  if (origin) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    res.setHeader("Access-Control-Allow-Credentials", "true");
   }
 
   res.status(status).json({
