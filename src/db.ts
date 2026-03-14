@@ -67,7 +67,19 @@ export async function query<T = unknown>(
   values?: unknown[],
 ): Promise<{ rows: T[]; rowCount: number }> {
   const p = getPool();
-  if (!p) throw new Error("Database not configured: set DATABASE_URL or DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME.");
+  if (!p) {
+    const dbKeys = Object.keys(process.env).filter(
+      (k) =>
+        k.includes("DATABASE") ||
+        k.includes("SUPABASE") ||
+        k.includes("POSTGRES") ||
+        k === "DB_HOST" ||
+        k === "DB_USER"
+    );
+    // eslint-disable-next-line no-console
+    console.error("[db] No URL. Env keys that might be DB-related:", dbKeys.length ? dbKeys.join(", ") : "none");
+    throw new Error("Database not configured: set DATABASE_URL or DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME.");
+  }
   const result = await p.query(text, values);
   return { rows: (result.rows as T[]), rowCount: result.rowCount ?? 0 };
 }
