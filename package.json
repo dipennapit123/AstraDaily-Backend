@@ -5,7 +5,7 @@
   "main": "dist/server.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
-    "build": "npx tsc -p tsconfig.json",
+    "build": "node node_modules/typescript/bin/tsc -p tsconfig.json",
     "start": "node dist/server.js",
     "db:migrate": "node scripts/run-migrate.js",
     "lint": "echo \"No linter configured\""
