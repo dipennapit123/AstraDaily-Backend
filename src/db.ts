@@ -35,13 +35,9 @@ function buildUrlFromParts(): string {
 }
 
 /**
- * Prefer connection built from DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME (e.g. when hosting).
- * Fall back to DATABASE_URL / POSTGRES_URL if parts are not set.
+ * Prefer DATABASE_URL / SUPABASE_DB_URL (e.g. Supabase). If not set, build from DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME.
  */
 export function getDatabaseUrl(): string {
-  const fromParts = buildUrlFromParts();
-  if (fromParts) return fromParts;
-
   const raw =
     process.env.DATABASE_URL ||
     process.env.SUPABASE_DB_URL ||
@@ -50,8 +46,9 @@ export function getDatabaseUrl(): string {
     process.env.POSTGRES_URL ||
     "";
   const url = raw.trim();
-  if (url.startsWith("${{") && url.includes("DATABASE_URL")) return "";
-  return url;
+  if (url && !url.startsWith("${{")) return url;
+
+  return buildUrlFromParts();
 }
 
 const connectionString = getDatabaseUrl();
